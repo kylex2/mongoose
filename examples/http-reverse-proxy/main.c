@@ -9,13 +9,8 @@
 
 #include "mongoose.h"
 
-static const char *s_backend_url =
-#if MG_ENABLE_MBEDTLS || MG_ENABLE_OPENSSL
-    "https://cesanta.com";
-#else
-    "http://info.cern.ch";
-#endif
-static const char *s_listen_url = "http://localhost:8000";
+static const char *s_backend_url = "http://127.0.0.1:8000";
+static const char *s_listen_url = "http://localhost:8001";
 
 // Forward client request to the backend connection, rewriting the Host header
 static void forward_request(struct mg_http_message *hm,
@@ -64,7 +59,7 @@ static void fn(struct mg_connection *c, int ev, void *ev_data, void *fn_data) {
       }
       c->fn_data = c2;
       forward_request(hm, c2);
-      c2->is_hexdumping = 1;
+      //c2->is_hexdumping = 1;
     }
   } else if (ev == MG_EV_CLOSE) {
     if (c2 != NULL) c2->is_closing = 1;
